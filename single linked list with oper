@@ -1,0 +1,192 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node{
+    int data;
+    struct node*next;
+};
+typedef struct node NODE;
+
+NODE*insertfront(NODE*,int);
+NODE*Searchkey(NODE*,int);
+NODE*i_pos(NODE*,int,int);
+NODE*deletekey(NODE*,int);
+NODE*reverselist(NODE*);
+
+void display(NODE*);
+
+void main() {
+    NODE*start=NULL;
+    int num,choic,k,p;
+    while(1){
+       
+        printf("\n1. Insert at Front\n");
+        printf("2. Insert at Position\n");
+        printf("3. Delete a Node\n");
+        printf("4. Searching a Key\n");
+        printf("5. Display\n");
+        printf("6. Reverse the List\n");
+        printf("7. Exit\n");
+        printf("Enter your choice : ");
+        scanf("%d",&choic);
+        switch(choic){
+            case 1: printf("Enter data to insert: ");
+            scanf("%d",&num);
+            start=insertfront(start,num);
+            break;
+        
+            
+            case 2: printf("Enter data to insert: ");
+                    scanf("%d",&num);
+                    printf("Enter the  position data to be insert: ");
+                    scanf("%d",&p);
+                    start=i_pos(start,num,p);
+                    break;
+            
+            case 3: printf("Enter Key value: ");
+                    scanf("%d",&k);
+                    start=deletekey(start,k);
+                    break;
+            
+            case 4: printf("Enter key to be searched: ");
+                    scanf("%d",&k);
+                    start=Searchkey(start,k);
+                    break;
+            
+            case 5: display(start);
+                    break;
+            
+            case 6: start=reverselist(start);
+                    printf("List reversed successfully.\n");
+                    break;
+        
+            case 7: exit(0);
+        }
+    }
+    
+}
+
+NODE*insertfront(NODE*start,int n){
+    NODE*new_node;
+    new_node=(NODE*)malloc(sizeof(struct node));
+    new_node->data=n;
+    new_node->next=start;
+    start=new_node;
+    return start;
+}
+
+NODE*i_pos(NODE*start,int n,int position){
+    NODE*new_node,*temp,*ptr;
+    int count;
+    new_node=(NODE*)malloc(sizeof(struct node));
+    new_node->data=n;
+    if((start==NULL) && (position==1)){
+        new_node->next=NULL;
+        start=new_node;
+    }
+    else if((start == NULL) && (count > 1)){
+        printf("Invalid position");
+    }
+    else{
+        count=1;
+        ptr=start;
+        while((ptr != NULL) && (count != position)){
+            temp=ptr;
+            ptr=ptr->next;
+            count++;
+        }
+        if(ptr==NULL){
+            printf("Invalid position");
+        }
+        else{
+            new_node->next=ptr;
+            temp->next=new_node;
+        }
+    }
+    return start;
+}
+NODE*deletekey(NODE* start,int key){
+    NODE*temp,*ptr=start;
+    if(start == NULL){
+        printf("List empty\n");
+        return start;
+    }
+    else if(start->data == key){
+        printf("Item deleted: %d",start->data);
+        ptr=start;
+        start=start->next;
+        free(ptr);
+        return start;
+    }
+    else{
+        ptr=start;
+        while((ptr != NULL) && (ptr->data != key)){
+            temp=ptr;
+            ptr=ptr->next;
+        }
+    }
+    if(ptr == NULL){
+        printf("Invalid key");
+    }
+    else{
+        temp->next=ptr->next;
+        printf("Item deleted: %d\n",ptr->data);
+        free(ptr);
+    }
+    return start;
+}
+void display(NODE*start){
+    NODE*ptr;
+    if(start == NULL){
+        printf("The List is empty\n");
+    
+        
+    }
+    else{
+    
+      ptr=start;
+      printf("The list data are : \n");
+      while( ptr != NULL){
+         printf("%d\n",ptr->data);
+         ptr=ptr->next;
+        
+        }
+    }
+}
+
+NODE*Searchkey(NODE*start,int key){
+    NODE *ptr;
+    if(start == NULL){
+        printf("The List is empty\n");
+    }
+    else{
+        ptr=start;
+        while((ptr != NULL) && (ptr->data != key)){
+            ptr=ptr->next;
+        }
+        if(ptr == NULL){
+            printf("invalid key\n");
+        }
+        else{
+            printf("The key %d found\n",ptr->data);
+        }
+    }
+    return start;
+}
+
+NODE*reverselist(NODE* start){
+    NODE* prev = NULL,*current=start,*next=NULL;
+    while(current != NULL){
+        next=current->next;
+        current->next=prev;
+        prev=current;
+        current=next;
+    }
+    return prev;
+}
+    
+
+  
+    
+
+   
